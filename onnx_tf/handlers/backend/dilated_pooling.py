@@ -592,24 +592,24 @@ class DilatedPooling(object):
       padding_ = self.padding
 
     # if spatial_size == 2 and maxpool we can use tf.nn.dilation2d directly
-    if self.spatial_size == 2 and self.pooling_type.startswith("MAX") \
-            and not force_custom_impl:
-      strides = [1] + list(self.strides) + [1]
-      dilations = [1] + list(self.dilations) + [1]
+    # if self.spatial_size == 2 and self.pooling_type.startswith("MAX") \
+    #         and not force_custom_impl:
+    #   strides = [1] + list(self.strides) + [1]
+    #   dilations = [1] + list(self.dilations) + [1]
 
-      filter = tf.zeros(
-          [self.kernel_shape[0], self.kernel_shape[1], self.input_shape[3]],
-          self.input.dtype)
-      pooled = tf.nn.dilation2d(
-          input=self.input,
-          filters=filter,
-          strides=strides,
-          dilations=dilations,
-          padding=padding_,
-          data_format="NHWC")
+    #   filter = tf.zeros(
+    #       [self.kernel_shape[0], self.kernel_shape[1], self.input_shape[3]],
+    #       self.input.dtype)
+    #   pooled = tf.nn.dilation2d(
+    #       input=self.input,
+    #       filters=filter,
+    #       strides=strides,
+    #       dilations=dilations,
+    #       padding=padding_,
+    #       data_format="NHWC")
     # if strides == [1] * spatial_size or dilation == [1] * spatial_size we
     # can use tf.nn.pool
-    elif self.strides == [1] * self.spatial_size or \
+    if self.strides == [1] * self.spatial_size or \
             self.dilations == [1] * self.spatial_size and \
             not force_custom_impl:
       pooled = tf.nn.pool(
